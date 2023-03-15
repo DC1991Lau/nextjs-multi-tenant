@@ -6,7 +6,11 @@ export const metadata: Metadata = {
 };
 
 const page = () => {
-  return <div>Dashboard</div>;
+  return (
+    <div className="flex items-center justify-center w-full">
+      Dashboard - Escolher o workspace
+    </div>
+  );
 };
 
 export default page;

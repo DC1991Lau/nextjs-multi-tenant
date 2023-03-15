@@ -1,3 +1,9 @@
+import ProfileDropdown from "@/components/ProfileDropdown";
+import { Button } from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import LargeHeading from "@/components/ui/LargeHeading";
+import Paragraph from "@/components/ui/Paragraph";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <div className="">Landing Page</div>;
+  return (
+    <div>
+      <p>Landing Page</p>
+    </div>
+  );
 }

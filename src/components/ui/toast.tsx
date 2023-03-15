@@ -1,7 +1,7 @@
 "use client";
 
-import { Icons } from "@/components/Icons";
 import { cn } from "@/lib/utils";
+import { Icon } from "lucide-react";
 import * as React from "react";
 import hotToast, { Toaster as HotToaster } from "react-hot-toast";
 
@@ -25,11 +25,11 @@ export function Toast({ visible, className, ...props }: ToastProps) {
 }
 
 interface ToastIconProps extends Partial<React.SVGProps<SVGSVGElement>> {
-  name: keyof typeof Icons;
+  icon: Icon;
 }
 
-Toast.Icon = function ToastIcon({ name, className, ...props }: ToastIconProps) {
-  const Icon = Icons[name];
+Toast.Icon = function ToastIcon({ className, icon, ...props }: ToastIconProps) {
+  const Icon = icon;
 
   if (!Icon) {
     return null;

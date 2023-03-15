@@ -1,9 +1,15 @@
-import { FC } from 'react'
+import Link from "next/link";
+import { Button } from "./ui/Button";
 
-interface NavbarProps {}
+const Navbar = async () => {
+  return (
+    <div className="h-16 bg-white w-full flex items-center justify-between border-b px-4 dark:bg-slate-900">
+      <Link href="/">Multi-tenant Boilerplate v1.0</Link>
+      <Button variant="default" size="default">
+        Sign In
+      </Button>
+    </div>
+  );
+};
 
-const Navbar: FC<NavbarProps> = ({}) => {
- return <div> Navbar </div>
-}
-
-export default Navbar
+export default Navbar;
