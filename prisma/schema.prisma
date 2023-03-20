@@ -25,6 +25,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -33,6 +34,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -43,6 +46,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  tenants       UsersOnTenants[]
 }
 
 model VerificationToken {
@@ -51,4 +55,31 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Tenant {
+  id            String    @id @default(cuid())
+  name          String    
+  slug          String    @unique
+  plan          String
+  image         String?
+  createdAt     DateTime @default(now()) @db.Timestamp(6)
+  users         UsersOnTenants[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model UsersOnTenants {
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String 
+  tenant       Tenant     @relation(fields: [tenantId], references: [id])
+  tenantId     String 
+  role         Role        @default(ADMIN)
+
+  @@id([userId, tenantId])  
+  @@index([tenantId])
+  @@index([userId])
 }

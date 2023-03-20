@@ -49,11 +49,43 @@ export const authOptions: NextAuthOptions = {
         },
       });
 
+      const tenants = await db.tenant.findMany({
+        where: {
+          users: {
+            every: {
+              userId: user?.id,
+            },
+          },
+        },
+      });
+      if (user && tenants.length === 0) {
+        // TO-DO:
+        // Create new default tenant
+
+        await db.$transaction(async () => {
+          const tenant = await db.tenant.create({
+            data: {
+              name: user.name + " Workspace",
+              plan: "free",
+              slug:
+                //@ts-ignore
+                user?.name?.toLocaleLowerCase().replace(/ /g, "-") +
+                Math.floor(Math.random() * 101),
+            },
+          });
+
+          await db.usersOnTenants.create({
+            data: {
+              userId: user?.id,
+              tenantId: tenant?.id,
+            },
+          });
+        });
+      }
       if (!dbUser) {
         token.id = user!.id;
         return token;
       }
-
       return {
         id: dbUser.id,
         name: dbUser.name,
