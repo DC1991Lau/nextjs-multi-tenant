@@ -8,9 +8,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { ChevronDown } from "lucide-react";
-import { Tenant, User } from "@prisma/client";
+import { ChevronDown, Plus } from "lucide-react";
+import { Tenant } from "@prisma/client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export type TenantWithoutCreatedAt = Omit<Tenant, "createdAt">;
 interface WorkspaceDropdownProps {
@@ -18,11 +19,18 @@ interface WorkspaceDropdownProps {
 }
 
 const WorkspaceDropdown: FC<WorkspaceDropdownProps> = ({ tenants }) => {
+  const pathname = usePathname();
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger
+        asChild
+        className={`${
+          pathname === "/" || pathname === "/app/settings" ? "hidden" : ""
+        }`}
+      >
         <Button variant="outline" size="default" className="gap-3">
-          {tenants?.length > 0 && tenants[0].name}
+          {tenants && tenants?.length > 0 && tenants[0].name}
           <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
@@ -32,6 +40,15 @@ const WorkspaceDropdown: FC<WorkspaceDropdownProps> = ({ tenants }) => {
             <Link href={`/app/${tenant.slug}`}>{tenant.name}</Link>
           </DropdownMenuItem>
         ))}
+        <DropdownMenuItem className="border-t">
+          <Link
+            href="/app/create/workspace"
+            className="flex gap-4 items-center"
+          >
+            <Plus />
+            <span>New Workspace</span>
+          </Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

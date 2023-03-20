@@ -1,5 +1,5 @@
+import { getTenantsByUserId } from "@/helpers/tenants/crud";
 import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import ProfileDropdown from "./ProfileDropdown";
@@ -10,15 +10,7 @@ import WorkspaceDropdown from "./WorkspaceDropdown";
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
-  const tenants = await db.tenant.findMany({
-    where: {
-      users: {
-        every: {
-          userId: session?.user.id,
-        },
-      },
-    },
-  });
+  const tenants = await getTenantsByUserId();
 
   return (
     <div className="h-16 bg-white w-full flex items-center justify-between border-b px-4 dark:bg-slate-900">

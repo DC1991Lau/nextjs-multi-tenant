@@ -11,6 +11,7 @@ import {
 import { ChevronDown, Loader2, LogOut, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface ProfileDropdownProps {}
 
@@ -39,10 +40,12 @@ const ProfileDropdown: FC<ProfileDropdownProps> = ({}) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem className="gap-4">
-          <Settings />
-          Settings
-        </DropdownMenuItem>
+        <Link href={`/app/settings`}>
+          <DropdownMenuItem className="gap-4">
+            <Settings />
+            <span>Settings</span>
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuItem className="gap-4" onClick={() => signOut()}>
           <LogOut />
           Sign out

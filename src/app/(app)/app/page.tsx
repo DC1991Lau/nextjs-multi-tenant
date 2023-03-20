@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/Button";
 import LargeHeading from "@/components/ui/LargeHeading";
-import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
+import { getTenantsByUserId } from "@/helpers/tenants/crud";
+import { Loader2 } from "lucide-react";
 import { Metadata } from "next";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -12,16 +11,7 @@ export const metadata: Metadata = {
 };
 
 const page = async () => {
-  const session = await getServerSession(authOptions);
-  const tenants = await db.tenant.findMany({
-    where: {
-      users: {
-        every: {
-          userId: session?.user.id,
-        },
-      },
-    },
-  });
+  const tenants = await getTenantsByUserId();
 
   return (
     <div className="flex flex-col gap-4 items-center justify-center w-full">
